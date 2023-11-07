@@ -32,78 +32,95 @@ public class HeaderButtonsTests extends BaseTests {
     @Test
     public void testRetailButton() {
         assertThat(homePage.isDisplayed(homePage.retailButton))
-                .as("Retail button doesn't appear");
+                .as("Проверка отображения кнопки \"Частным клиентам\"")
+                .isTrue();
         RetailPage retailPage = homePage.clickRetail();
         fluentWait.until(ExpectedConditions.urlToBe(retailUrl));
-        assertThat(retailPage.getUrl().contains(retailUrl))
-                .as("URL doesn't contain %s", retailUrl);
+        assertThat(retailPage.getUrl())
+                .as("Проверка URL страницы \"Частным клиентам\"")
+                .isEqualTo(retailUrl);
     }
 
     @Test
     public void testBusinessButton() {
         assertThat(homePage.isDisplayed(homePage.businessButton))
-                .as("Business button doesn't appear");
+                .as("Проверка отображения кнопки \"Бизнесу\"")
+                .isTrue();
         BusinessPage businessPage = homePage.clickBusinessPage();
         fluentWait.until(ExpectedConditions.urlToBe(businessUrl));
-        assertThat(businessPage.getUrl().contains(businessUrl))
-                .as("URL doesn't contain %s", businessUrl);
+        assertThat(businessPage.getUrl())
+                .as("Проверка URL страницы \"Бизнесу\"")
+                .isEqualTo(businessUrl);
     }
+
 
     @Test
     public void testForeignTradeButton() {
         assertThat(homePage.isDisplayed(homePage.foreignTradeButton))
-                .as("Foreign trade button doesn't appear");
+                .as("Проверка отображения кнопки \"ВЭД\"")
+                .isTrue();
         ForeignTradePage foreignTradePage = homePage.clickForeignTrade();
         fluentWait.until(ExpectedConditions.urlToBe(foreignTradeUrl));
-        assertThat((foreignTradePage.getUrl().contains(foreignTradeUrl)))
-                .as("URL doesn't contain %s", foreignTradeUrl);
+        assertThat(foreignTradePage.getUrl())
+                .as("Проверка URL страницы \"ВЭД\"")
+                .isEqualTo(foreignTradeUrl);
     }
 
     @Test
     public void testFinanceButton() {
         assertThat(homePage.isDisplayed(homePage.financeButton))
-                .as("Finance button doesn't appear");
+                .as("Проверка отображения кнопки \"Финансовые рынки\"")
+                .isTrue();
         FinancePage financePage = homePage.clickFinancePage();
         fluentWait.until(ExpectedConditions.urlToBe(financeUrl));
-        assertThat(financePage.getUrl().contains(financeUrl))
-                .as("URL doesn't contain %s", financeUrl);
+        assertThat(financePage.getUrl())
+                .as("Проверка URL страницы \"Финансовые рынки\"")
+                .isEqualTo(financeUrl);
     }
 
     @Test
     public void testPrivateBankingButton() {
         assertThat(homePage.isDisplayed(homePage.privateBankingButton))
-                .as("Private banking button doesn't appear");
+                .as("Проверка отображения кнопки \"Private Banking\"")
+                .isTrue();
         PrivateBankingPage privateBankingPage = homePage.clickPrivateBankingPage();
         fluentWait.until(ExpectedConditions.urlToBe(privateBankingUrl));
-        assertThat(privateBankingPage.getUrl().contains(privateBankingUrl))
-                .as("URL doesn't contain %s", privateBankingUrl);
+        assertThat(privateBankingPage.getUrl())
+                .as("Проверка URL страницы \"Private Banking\"").
+                isEqualTo(privateBankingUrl);
     }
 
     @Test
     public void testInvestorsButton() {
         assertThat(homePage.isDisplayed(homePage.investorsButton))
-                .as("Investors button doesn't appear");
+                .as("Проверка отображения кнопки \"Инвесторам\"")
+                .isTrue();
         InvestorsPage investorsPage = homePage.clickInvestorsPage();
         fluentWait.until(ExpectedConditions.urlToBe(investorsUrl));
-        assertThat(investorsPage.getUrl().contains(investorsUrl))
-                .as("URL doesn't contain %s", investorsUrl);
+        assertThat(investorsPage.getUrl())
+                .as("Проверка URL страницы \"Инвесторам\"")
+                .isEqualTo(investorsUrl);
     }
 
     @Test
     public void testLoginButton() {
         assertThat(homePage.isDisplayed(homePage.loginButton))
-                .as("Login button doesn't appear");
+                .as("Проверка отображения кнопки \"Войти\"")
+                .isTrue();
         LoginPage loginPage = homePage.clickLoginPage();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         homePage.switchToSecondTab();
-        softly.assertThat(loginPage.getUrl().contains(loginUrl))
-                .as("URL doesn't contain %s", loginUrl);
+        softly.assertThat(loginPage.getUrl())
+                .as("Проверка, что URL страницы авторизации начинается с \"%s\"", loginUrl)
+                .startsWith(loginUrl);
         softly.assertThat(loginPage.isDisplayed(loginPage.usernameField))
-                .as("Username field doesn't appear");
+                .as("Проверка отображения поля ввода логина")
+                .isTrue();
         softly.assertThat(loginPage.isDisplayed(loginPage.passwordField))
-                .as("Password field doesn't appear");
+                .as("Проверка отображения поля ввода пароля")
+                .isTrue();
         softly.assertThat(loginPage.isDisplayed(loginPage.loginButton))
-                .as("Login button doesn't appear");
+                .as("Проверка отображения кнопки авторизации")
+                .isTrue();
         softly.assertAll();
         loginPage.closeTab();
     }
@@ -114,9 +131,8 @@ public class HeaderButtonsTests extends BaseTests {
         fluentWait.until(ExpectedConditions.urlToBe(retailUrl));
         DebitPage debitPage = retailPage.clickDebit();
         fluentWait.until(ExpectedConditions.urlToBe(debitUrl));
-        assertThat(debitPage.getUrl().contains(debitUrl))
-                .as("URL doesn't contain %s", debitPage);
+        assertThat(debitPage.getUrl())
+                .as("Проверка URL страницы \"Дебетовые карты\"")
+                .isEqualTo(debitUrl);
     }
-
-
 }
