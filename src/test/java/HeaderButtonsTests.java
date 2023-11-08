@@ -1,4 +1,9 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
+import io.qameta.allure.Owner;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +16,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Feature("Проверка работоспособности кнопок на главной странице сайта БСПБ")
 public class HeaderButtonsTests extends BaseTests {
 
     Wait<WebDriver> fluentWait = new FluentWait<>(driver)
@@ -29,6 +35,9 @@ public class HeaderButtonsTests extends BaseTests {
     final String loginUrl = "https://i.bspb.ru/";
     final String debitUrl = "https://www.bspb.ru/retail/cards/debit";
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Частным клиентам\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testRetailButton() {
         assertThat(homePage.isDisplayed(homePage.retailButton))
@@ -41,6 +50,9 @@ public class HeaderButtonsTests extends BaseTests {
                 .isEqualTo(retailUrl);
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Бизнесу\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testBusinessButton() {
         assertThat(homePage.isDisplayed(homePage.businessButton))
@@ -53,7 +65,9 @@ public class HeaderButtonsTests extends BaseTests {
                 .isEqualTo(businessUrl);
     }
 
-
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"ВЭД\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testForeignTradeButton() {
         assertThat(homePage.isDisplayed(homePage.foreignTradeButton))
@@ -66,6 +80,9 @@ public class HeaderButtonsTests extends BaseTests {
                 .isEqualTo(foreignTradeUrl);
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Финансовые рынки\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testFinanceButton() {
         assertThat(homePage.isDisplayed(homePage.financeButton))
@@ -78,6 +95,9 @@ public class HeaderButtonsTests extends BaseTests {
                 .isEqualTo(financeUrl);
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Private Banking\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testPrivateBankingButton() {
         assertThat(homePage.isDisplayed(homePage.privateBankingButton))
@@ -90,6 +110,9 @@ public class HeaderButtonsTests extends BaseTests {
                 isEqualTo(privateBankingUrl);
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Инвесторам\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testInvestorsButton() {
         assertThat(homePage.isDisplayed(homePage.investorsButton))
@@ -102,6 +125,10 @@ public class HeaderButtonsTests extends BaseTests {
                 .isEqualTo(investorsUrl);
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Войти\"")
+    @Description("Проверка отображения и открытия страницы по нажатию, а также отображение на открытой странице полей ввода логина и пароля, кнопки авторизации")
+    @Flaky
     @Test
     public void testLoginButton() {
         assertThat(homePage.isDisplayed(homePage.loginButton))
@@ -125,6 +152,9 @@ public class HeaderButtonsTests extends BaseTests {
         loginPage.closeTab();
     }
 
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Кнопка \"Дебетовые карты\" во всплывающем окне \"Карты\"")
+    @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testDebitButton() {
         RetailPage retailPage = homePage.clickRetail();
