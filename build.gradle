@@ -2,8 +2,11 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'io.qameta.allure' version '2.9.6'
-
 }
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+description = 'BSPB-HomePage'
 
 repositories {
     mavenLocal()
@@ -12,22 +15,60 @@ repositories {
     }
 }
 
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+tasks.register('cucumberCli') {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:target/cucumber-report.html',
+                    '--glue', 'com.baeldung.cucumber',
+                    'src/test/resources']
+        }
+    }
+}
+
 dependencies {
+    // selenium
     api 'org.seleniumhq.selenium:selenium-java:4.14.1'
     api 'io.github.bonigarcia:webdrivermanager:5.6.0'
 
+    // junit
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'org.assertj:assertj-core:3.24.2'
 
+    // allure
     testImplementation 'io.qameta.allure:allure-java-commons:2.24.0'
     testImplementation 'io.qameta.allure:allure-commandline:2.24.0'
     testImplementation 'io.qameta.allure:allure-junit5:2.24.0'
+    testImplementation platform('io.qameta.allure:allure-bom:2.24.0')
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm'
+    testImplementation 'io.qameta.allure:allure-junit-platform'
+    testImplementation 'junit:junit:4.13.1'
+
+    agent 'org.aspectj:aspectjweaver:1.9.20.1'
+
+    // cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.14.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
+    testImplementation 'io.cucumber:cucumber-picocontainer:7.14.0'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
-description = 'BSPB-HomePage'
+test {
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'

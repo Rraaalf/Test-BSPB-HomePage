@@ -13,6 +13,8 @@ public class BaseTests {
     protected static WebDriver driver;
     protected HomePage homePage;
 
+
+
     @BeforeAll
     public static void setUp() {
         WebDriverManager.chromedriver().setup();

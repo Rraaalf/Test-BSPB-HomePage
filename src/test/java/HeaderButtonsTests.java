@@ -17,6 +17,7 @@ import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Feature("Проверка работоспособности кнопок на главной странице сайта БСПБ")
+@DisplayName("Кнопки в верхней части страницы")
 public class HeaderButtonsTests extends BaseTests {
 
     Wait<WebDriver> fluentWait = new FluentWait<>(driver)
