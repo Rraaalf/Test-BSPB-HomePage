@@ -5,6 +5,8 @@ import io.qameta.allure.Owner;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -165,5 +167,27 @@ public class HeaderButtonsTests extends BaseTests {
         assertThat(debitPage.getUrl())
                 .as("Проверка URL страницы \"Дебетовые карты\"")
                 .isEqualTo(debitUrl);
+    }
+
+    @Owner(value = "Илья Никулин")
+    @DisplayName("Форма авторизации")
+    @Description("Проверка ввода некорректных данных в форму авторизации")
+    @ParameterizedTest(name = "Логин:{0}; пароль:{1}")
+    @CsvSource({
+            "admin, admin",
+            "login, password"
+    })
+    public void testAuthorisationFields(String login, String password) {
+        LoginPage loginPage = homePage.clickLoginPage();
+        homePage.switchToSecondTab();
+        driver.findElement(loginPage.usernameField).clear();
+        driver.findElement(loginPage.usernameField).sendKeys(login);
+        driver.findElement(loginPage.passwordField).clear();
+        driver.findElement(loginPage.passwordField).sendKeys(password);
+        driver.findElement(loginPage.loginButton).click();
+        assertThat(loginPage.isDisplayed(loginPage.alert))
+                .as("Проверка появления сообщения о неправильном вводе пароля")
+                .isTrue();
+        loginPage.closeTab();
     }
 }

@@ -1,7 +1,9 @@
 package steps;
 
 import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
@@ -32,7 +34,7 @@ public class Steps {
             .ignoring(NoSuchElementException.class);
 
     @Before
-    public void setup(){
+    public static void setup(){
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -41,10 +43,6 @@ public class Steps {
 
     @Дано("Пользователь заходит на главную страницу банка")
     public void пользователь_заходит_на_главную_страницу_банка(){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get("https://www.bspb.ru/");
         homePage = new HomePage(driver);
     }
@@ -71,7 +69,7 @@ public class Steps {
     }
 
     @After
-    public void teardown(){
+    public static void teardown(){
         driver.quit();
     }
 }
