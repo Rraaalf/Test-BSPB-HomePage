@@ -2,19 +2,12 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Flaky;
 import io.qameta.allure.Owner;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import pages.*;
-
-import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,35 +15,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Кнопки в верхней части страницы")
 public class HeaderButtonsTests extends BaseTests {
 
-    Wait<WebDriver> fluentWait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(10))
-            .pollingEvery(Duration.ofSeconds(1))
-            .ignoring(NoSuchElementException.class);
-
-    SoftAssertions softly = new SoftAssertions();
-
-    final String retailUrl = "https://www.bspb.ru/retail";
-    final String businessUrl = "https://www.bspb.ru/business";
-    final String foreignTradeUrl = "https://www.bspb.ru/foreign-trade";
-    final String financeUrl = "https://www.bspb.ru/finance";
-    final String privateBankingUrl = "https://pb.bspb.ru/";
-    final String investorsUrl = "https://www.bspb.ru/investors";
-    final String loginUrl = "https://i.bspb.ru/";
-    final String debitUrl = "https://www.bspb.ru/retail/cards/debit";
-
     @Owner(value = "Илья Никулин")
     @DisplayName("Кнопка \"Частным клиентам\"")
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testRetailButton() {
-        assertThat(homePage.isDisplayed(homePage.retailButton))
+        assertThat(manager.isDisplayed(homePage.RETAIL_BUTTON))
                 .as("Проверка отображения кнопки \"Частным клиентам\"")
                 .isTrue();
         RetailPage retailPage = homePage.clickRetail();
-        fluentWait.until(ExpectedConditions.urlToBe(retailUrl));
-        assertThat(retailPage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(retailPage.RETAIL_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Частным клиентам\"")
-                .isEqualTo(retailUrl);
+                .isEqualTo(retailPage.RETAIL_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -58,14 +35,14 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testBusinessButton() {
-        assertThat(homePage.isDisplayed(homePage.businessButton))
+        assertThat(manager.isDisplayed(homePage.BUSINESS_BUTTON))
                 .as("Проверка отображения кнопки \"Бизнесу\"")
                 .isTrue();
         BusinessPage businessPage = homePage.clickBusinessPage();
-        fluentWait.until(ExpectedConditions.urlToBe(businessUrl));
-        assertThat(businessPage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(businessPage.BUSINESS_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Бизнесу\"")
-                .isEqualTo(businessUrl);
+                .isEqualTo(businessPage.BUSINESS_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -73,14 +50,14 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testForeignTradeButton() {
-        assertThat(homePage.isDisplayed(homePage.foreignTradeButton))
+        assertThat(manager.isDisplayed(homePage.FOREIGN_TRADE_BUTTON))
                 .as("Проверка отображения кнопки \"ВЭД\"")
                 .isTrue();
         ForeignTradePage foreignTradePage = homePage.clickForeignTrade();
-        fluentWait.until(ExpectedConditions.urlToBe(foreignTradeUrl));
-        assertThat(foreignTradePage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(foreignTradePage.FOREIGN_TRADE_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"ВЭД\"")
-                .isEqualTo(foreignTradeUrl);
+                .isEqualTo(foreignTradePage.FOREIGN_TRADE_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -88,14 +65,14 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testFinanceButton() {
-        assertThat(homePage.isDisplayed(homePage.financeButton))
+        assertThat(manager.isDisplayed(homePage.FINANCE_BUTTON))
                 .as("Проверка отображения кнопки \"Финансовые рынки\"")
                 .isTrue();
         FinancePage financePage = homePage.clickFinancePage();
-        fluentWait.until(ExpectedConditions.urlToBe(financeUrl));
-        assertThat(financePage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(financePage.FINANCE_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Финансовые рынки\"")
-                .isEqualTo(financeUrl);
+                .isEqualTo(financePage.FINANCE_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -103,14 +80,14 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testPrivateBankingButton() {
-        assertThat(homePage.isDisplayed(homePage.privateBankingButton))
+        assertThat(manager.isDisplayed(homePage.PRIVATE_BANKING_BUTTON))
                 .as("Проверка отображения кнопки \"Private Banking\"")
                 .isTrue();
         PrivateBankingPage privateBankingPage = homePage.clickPrivateBankingPage();
-        fluentWait.until(ExpectedConditions.urlToBe(privateBankingUrl));
-        assertThat(privateBankingPage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(privateBankingPage.PRIVATE_BANKING_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Private Banking\"").
-                isEqualTo(privateBankingUrl);
+                isEqualTo(privateBankingPage.PRIVATE_BANKING_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -118,14 +95,14 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testInvestorsButton() {
-        assertThat(homePage.isDisplayed(homePage.investorsButton))
+        assertThat(manager.isDisplayed(homePage.INVESTORS_BUTTON))
                 .as("Проверка отображения кнопки \"Инвесторам\"")
                 .isTrue();
         InvestorsPage investorsPage = homePage.clickInvestorsPage();
-        fluentWait.until(ExpectedConditions.urlToBe(investorsUrl));
-        assertThat(investorsPage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(investorsPage.INVESTORS_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Инвесторам\"")
-                .isEqualTo(investorsUrl);
+                .isEqualTo(investorsPage.INVESTORS_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -134,25 +111,25 @@ public class HeaderButtonsTests extends BaseTests {
     @Flaky
     @Test
     public void testLoginButton() {
-        assertThat(homePage.isDisplayed(homePage.loginButton))
+        assertThat(manager.isDisplayed(homePage.LOGIN_BUTTON))
                 .as("Проверка отображения кнопки \"Войти\"")
                 .isTrue();
         LoginPage loginPage = homePage.clickLoginPage();
-        homePage.switchToSecondTab();
-        softly.assertThat(loginPage.getUrl())
-                .as("Проверка, что URL страницы авторизации начинается с \"%s\"", loginUrl)
-                .startsWith(loginUrl);
-        softly.assertThat(loginPage.isDisplayed(loginPage.usernameField))
+        manager.switchToSecondTab();
+        softly.assertThat(manager.getUrl())
+                .as("Проверка, что URL страницы авторизации начинается с \"%s\"", loginPage.LOGIN_URL)
+                .startsWith(loginPage.LOGIN_URL);
+        softly.assertThat(manager.isDisplayed(loginPage.USERNAME_FIELD))
                 .as("Проверка отображения поля ввода логина")
                 .isTrue();
-        softly.assertThat(loginPage.isDisplayed(loginPage.passwordField))
+        softly.assertThat(manager.isDisplayed(loginPage.PASSWORD_FIELD))
                 .as("Проверка отображения поля ввода пароля")
                 .isTrue();
-        softly.assertThat(loginPage.isDisplayed(loginPage.loginButton))
+        softly.assertThat(manager.isDisplayed(loginPage.LOGIN_BUTTON))
                 .as("Проверка отображения кнопки авторизации")
                 .isTrue();
         softly.assertAll();
-        loginPage.closeTab();
+        manager.closeTab();
     }
 
     @Owner(value = "Илья Никулин")
@@ -160,13 +137,13 @@ public class HeaderButtonsTests extends BaseTests {
     @Description("Проверка отображения и открытия страницы по нажатию")
     @Test
     public void testDebitButton() {
-        RetailPage retailPage = homePage.clickRetail();
-        fluentWait.until(ExpectedConditions.urlToBe(retailUrl));
+        homePage.clickRetail();
+        fluentWait.until(ExpectedConditions.urlToBe(retailPage.RETAIL_URL));
         DebitPage debitPage = retailPage.clickDebit();
-        fluentWait.until(ExpectedConditions.urlToBe(debitUrl));
-        assertThat(debitPage.getUrl())
+        fluentWait.until(ExpectedConditions.urlToBe(debitPage.DEBIT_URL));
+        assertThat(manager.getUrl())
                 .as("Проверка URL страницы \"Дебетовые карты\"")
-                .isEqualTo(debitUrl);
+                .isEqualTo(debitPage.DEBIT_URL);
     }
 
     @Owner(value = "Илья Никулин")
@@ -178,16 +155,16 @@ public class HeaderButtonsTests extends BaseTests {
             "login, password"
     })
     public void testAuthorisationFields(String login, String password) {
-        LoginPage loginPage = homePage.clickLoginPage();
-        homePage.switchToSecondTab();
-        driver.findElement(loginPage.usernameField).clear();
-        driver.findElement(loginPage.usernameField).sendKeys(login);
-        driver.findElement(loginPage.passwordField).clear();
-        driver.findElement(loginPage.passwordField).sendKeys(password);
-        driver.findElement(loginPage.loginButton).click();
-        assertThat(loginPage.isDisplayed(loginPage.alert))
+        homePage.clickLoginPage();
+        manager.switchToSecondTab();
+        driver.findElement(loginPage.USERNAME_FIELD).clear();
+        driver.findElement(loginPage.USERNAME_FIELD).sendKeys(login);
+        driver.findElement(loginPage.PASSWORD_FIELD).clear();
+        driver.findElement(loginPage.PASSWORD_FIELD).sendKeys(password);
+        driver.findElement(loginPage.LOGIN_BUTTON).click();
+        assertThat(manager.isDisplayed(loginPage.ALERT))
                 .as("Проверка появления сообщения о неправильном вводе пароля")
                 .isTrue();
-        loginPage.closeTab();
+        manager.closeTab();
     }
 }
