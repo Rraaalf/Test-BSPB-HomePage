@@ -24,6 +24,7 @@ configurations {
         extendsFrom testImplementation
     }
 }
+
 tasks.register('cucumberCli') {
     dependsOn assemble, testClasses
     doLast {
@@ -48,6 +49,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
 
     // allure
     testImplementation 'io.qameta.allure:allure-java-commons:2.24.0'
@@ -58,6 +60,7 @@ dependencies {
     testImplementation 'io.qameta.allure:allure-junit-platform'
     testImplementation 'junit:junit:4.13.1'
 
+    // AspectJ
     agent 'org.aspectj:aspectjweaver:1.9.20.1'
 
     // cucumber
@@ -67,7 +70,7 @@ dependencies {
 }
 
 test {
-    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
+    jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
 }
 
 tasks.withType(JavaCompile).configureEach {
