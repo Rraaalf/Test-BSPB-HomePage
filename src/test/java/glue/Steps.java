@@ -1,9 +1,7 @@
-package steps;
+package glue;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
@@ -14,8 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import pages.HomePage;
+import pages.LoginPage;
+import pages.Manager;
 import pages.RetailPage;
 
 import java.time.Duration;
@@ -24,52 +23,94 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Steps {
 
-    private static WebDriver driver;
-    private HomePage homePage;
-    final String retailUrl = "https://www.bspb.ru/retail";
+    protected static WebDriver driver;
+    protected HomePage homePage = new HomePage(driver);
+    protected LoginPage loginPage = new LoginPage(driver);
+    protected RetailPage retailPage = new RetailPage(driver);
 
-    Wait<WebDriver> fluentWait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(10))
-            .pollingEvery(Duration.ofSeconds(1))
-            .ignoring(NoSuchElementException.class);
+    protected static void fluentWait(WebDriver driver, String url) {
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+
+        wait.until(ExpectedConditions.urlToBe(url));
+    }
 
     @Before
-    public static void setup(){
+    public void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
-    @Дано("Пользователь заходит на главную страницу банка")
-    public void пользователь_заходит_на_главную_страницу_банка(){
-        driver.get("https://www.bspb.ru/");
-        homePage = new HomePage(driver);
-    }
-
-    @И("Видит кнопку \"Частным клиентам\"")
-    public void видит_кнопку_частным_клиентам(){
-        assertThat(homePage.isDisplayed(homePage.retailButton))
-                .as("Проверка отображения кнопки \"Частным клиентам\"")
-                .isTrue();
-    }
-
-    @Когда("Пользователь нажимает на кнопку \"Частным клиентам\"")
-    public void пользователь_нажимает_на_кнопку_частным_клиентам(){
-        driver.findElement(homePage.retailButton).click();
-    }
-
-    @Тогда("Пользователь попадает на страницу \"Частным клиентам\"")
-    public void пользователь_попадает_на_страницу_частным_клиентам(){
-        RetailPage retailPage = homePage.clickRetail();
-        fluentWait.until(ExpectedConditions.urlToBe(retailUrl));
-        assertThat(retailPage.getUrl())
-                .as("Проверка URL страницы \"Частным клиентам\"")
-                .isEqualTo(retailUrl);
-    }
-
     @After
-    public static void teardown(){
+    public void teardown() {
         driver.quit();
+    }
+
+    @Дано("пользователь находится на главной странице БСПБ")
+    public void пользовательНаходитсяНаГлавнойСтраницеБСПБ() {
+        driver.get("https://www.bspb.ru/");
+    }
+
+    @И("отображается кнопка {string}")
+    public void отображаетсяКнопка(String arg0) {
+        if (arg0.contains("Частным клиентам")) {
+            assertThat(driver.findElement(homePage.RETAIL_BUTTON).isDisplayed())
+                    .as("Проверка отображения кнопки {string}")
+                    .isTrue();
+        }
+        if (arg0.contains("Войти")) {
+            assertThat(driver.findElement(homePage.LOGIN_BUTTON).isDisplayed())
+                    .as("Проверка отображения кнопки {string}")
+                    .isTrue();
+        }
+    }
+
+    @Когда("пользователь нажимает на кнопку {string}")
+    public void пользовательНажимаетНаКнопку(String arg0) {
+        if (arg0.contains("Частным клиентам")) {
+            driver.findElement(homePage.RETAIL_BUTTON).click();
+        }
+        if (arg0.contains("Войти")) {
+            driver.findElement(homePage.LOGIN_BUTTON).click();
+        }
+    }
+
+    @Тогда("открывается страница {string}")
+    public void открываетсяСтраница(String arg0) {
+        if (arg0.contains("Частным клиентам")) {
+            driver.findElement(homePage.RETAIL_BUTTON).click();
+            fluentWait(driver, retailPage.RETAIL_URL);
+            assertThat(driver.getCurrentUrl())
+                    .as("Проверка URL страницы \"Частным клиентам\"")
+                    .isEqualTo(retailPage.RETAIL_URL);
+        }
+        if (arg0.contains("Авторизация")) {
+            Manager manager = new Manager(driver);
+            manager.switchToSecondTab();
+            assertThat(driver.getCurrentUrl())
+                    .as("Проверка, что URL страницы авторизации начинается с \"%s\"", loginPage.LOGIN_URL)
+                    .startsWith(loginPage.LOGIN_URL);
+        }
+    }
+
+    @Когда("пользователь вводит {string} и {string} и нажимает кнопку авторизации")
+    public void пользовательВводитЛогинИПарольИНажимаетКнопкуАвторизации(String Логин, String Пароль) {
+        driver.findElement(loginPage.USERNAME_FIELD).clear();
+        driver.findElement(loginPage.USERNAME_FIELD).sendKeys(Логин);
+        driver.findElement(loginPage.PASSWORD_FIELD).clear();
+        driver.findElement(loginPage.PASSWORD_FIELD).sendKeys(Пароль);
+        driver.findElement(loginPage.LOGIN_BUTTON).click();
+    }
+
+    @Тогда("появляется сообщение о неправильном вводе пароля")
+    public void появляетсяСообщениеОНеправильномВводеПароля() {
+        Manager manager = new Manager(driver);
+        assertThat(manager.isDisplayed(loginPage.ALERT))
+                .as("Проверка появления сообщения о неправильном вводе пароля")
+                .isTrue();
     }
 }
