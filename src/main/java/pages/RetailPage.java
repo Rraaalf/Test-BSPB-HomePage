@@ -8,26 +8,21 @@ import java.time.Duration;
 
 public class RetailPage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
-    public final By cardsField = By.xpath("//div[@class='css-nxqkh1']/span[contains(., 'Карты')]");
-    public final By debitButton = By.xpath("//a[@href='/retail/cards/debit']");
+    public final By CARDS_FIELD = By.xpath("//div[@class='css-nxqkh1']/span[contains(., 'Карты')]");
+    public final By DEBIT_BUTTON = By.xpath("//a[@href='/retail/cards/debit']");
+    public final String RETAIL_URL = "https://www.bspb.ru/retail";
 
     public RetailPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public String getUrl() {
-        return driver.getCurrentUrl();
+        this.DRIVER = driver;
     }
 
     public DebitPage clickDebit() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(driver.findElement(cardsField)).perform();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        driver.findElement(debitButton).click();
-        return new DebitPage(driver);
+        Actions actions = new Actions(DRIVER);
+        actions.moveToElement(DRIVER.findElement(CARDS_FIELD)).perform();
+        DRIVER.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        DRIVER.findElement(DEBIT_BUTTON).click();
+        return new DebitPage(DRIVER);
     }
-
-
 }

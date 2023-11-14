@@ -4,13 +4,11 @@ import org.openqa.selenium.WebDriver;
 
 public class PrivateBankingPage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
-    public PrivateBankingPage(WebDriver driver){
-        this.driver = driver;
-    }
+    public final String PRIVATE_BANKING_URL = "https://pb.bspb.ru/";
 
-    public String getUrl(){
-        return driver.getCurrentUrl();
+    public PrivateBankingPage(WebDriver driver) {
+        this.DRIVER = driver;
     }
 }

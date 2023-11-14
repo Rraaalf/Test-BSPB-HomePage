@@ -3,33 +3,16 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
-
 public class LoginPage {
 
-    private final WebDriver driver;
-    public By usernameField = By.xpath("//input[contains(@name, 'username')]");
-    public By passwordField = By.xpath("//input[contains(@name, 'password')]");
-    public By loginButton = By.xpath("//button[contains(@id, 'login')]");
+    private final WebDriver DRIVER;
+    public final By USERNAME_FIELD = By.xpath("//input[contains(@name, 'username')]");
+    public final By PASSWORD_FIELD = By.xpath("//input[contains(@name, 'password')]");
+    public final By LOGIN_BUTTON = By.xpath("//button[contains(@id, 'login')]");
+    public final By ALERT = By.xpath("//div[contains(@class, 'alert')]");
+    public final String LOGIN_URL = "https://i.bspb.ru/";
 
-
-    public LoginPage(WebDriver driver){
-        this.driver = driver;
+    public LoginPage(WebDriver driver) {
+        this.DRIVER = driver;
     }
-
-    public String getUrl(){
-        return driver.getCurrentUrl();
-    }
-
-    public boolean isDisplayed(By element){
-        return driver.findElement(element).isDisplayed();
-    }
-
-    public void closeTab(){
-        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
-        driver.close();
-        driver.switchTo().window(tabs.get(0));
-    }
-
 }

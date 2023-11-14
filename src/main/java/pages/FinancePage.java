@@ -4,13 +4,11 @@ import org.openqa.selenium.WebDriver;
 
 public class FinancePage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
-    public FinancePage(WebDriver driver){
-        this.driver = driver;
-    }
+    public final String FINANCE_URL = "https://www.bspb.ru/finance";
 
-    public String getUrl(){
-        return driver.getCurrentUrl();
+    public FinancePage(WebDriver driver) {
+        this.DRIVER = driver;
     }
 }

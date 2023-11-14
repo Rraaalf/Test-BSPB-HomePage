@@ -4,13 +4,11 @@ import org.openqa.selenium.WebDriver;
 
 public class InvestorsPage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
-    public InvestorsPage(WebDriver driver){
-        this.driver = driver;
-    }
+    public final String INVESTORS_URL = "https://www.bspb.ru/investors";
 
-    public String getUrl(){
-        return driver.getCurrentUrl();
+    public InvestorsPage(WebDriver driver) {
+        this.DRIVER = driver;
     }
 }

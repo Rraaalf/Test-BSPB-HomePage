@@ -4,14 +4,11 @@ import org.openqa.selenium.WebDriver;
 
 public class ForeignTradePage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
+    public final String FOREIGN_TRADE_URL = "https://www.bspb.ru/foreign-trade";
 
     public ForeignTradePage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public String getUrl(){
-        return driver.getCurrentUrl();
+        this.DRIVER = driver;
     }
 }

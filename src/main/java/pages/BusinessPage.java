@@ -4,13 +4,11 @@ import org.openqa.selenium.WebDriver;
 
 public class BusinessPage {
 
-    private final WebDriver driver;
+    private final WebDriver DRIVER;
 
-    public BusinessPage(WebDriver driver){
-        this.driver = driver;
-    }
+    public final String BUSINESS_URL = "https://www.bspb.ru/business";
 
-    public String getUrl(){
-        return driver.getCurrentUrl();
+    public BusinessPage(WebDriver driver) {
+        this.DRIVER = driver;
     }
 }

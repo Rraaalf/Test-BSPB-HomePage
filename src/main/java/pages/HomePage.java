@@ -3,65 +3,53 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.ArrayList;
-
 public class HomePage {
 
-    private final WebDriver driver;
-    public final By retailButton = By.xpath("//a[@href='/retail']");
-    public final By foreignTradeButton = By.xpath("//a[@href='/foreign-trade']");
-    public final By businessButton = By.xpath("//a[@href='/business']");
-    public final By financeButton = By.xpath("//a[@href='/finance']");
-    public final By privateBankingButton = By.xpath("//a[@href='https://pb.bspb.ru/']");
-    public final By investorsButton = By.xpath("//a[@href='/investors']");
-    public final By loginButton = By.xpath("//a[@href='https://i.bspb.ru']");
+    private final WebDriver DRIVER;
+    public final By RETAIL_BUTTON = By.xpath("//a[@href='/retail']");
+    public final By FOREIGN_TRADE_BUTTON = By.xpath("//a[@href='/foreign-trade']");
+    public final By BUSINESS_BUTTON = By.xpath("//a[@href='/business']");
+    public final By FINANCE_BUTTON = By.xpath("//a[@href='/finance']");
+    public final By PRIVATE_BANKING_BUTTON = By.xpath("//a[@href='https://pb.bspb.ru/']");
+    public final By INVESTORS_BUTTON = By.xpath("//a[@href='/investors']");
+    public final By LOGIN_BUTTON = By.xpath("//a[@href='https://i.bspb.ru']");
 
-    public HomePage(WebDriver driver){
-        this.driver = driver;
+    public HomePage(WebDriver driver) {
+        this.DRIVER = driver;
     }
 
-    public boolean isDisplayed(By element){
-        return driver.findElement(element).isDisplayed();
+    public RetailPage clickRetail() {
+        DRIVER.findElement(RETAIL_BUTTON).click();
+        return new RetailPage(DRIVER);
     }
 
-    public RetailPage clickRetail(){
-        driver.findElement(retailButton).click();
-        return new RetailPage(driver);
+    public ForeignTradePage clickForeignTrade() {
+        DRIVER.findElement(FOREIGN_TRADE_BUTTON).click();
+        return new ForeignTradePage(DRIVER);
     }
 
-    public ForeignTradePage clickForeignTrade(){
-        driver.findElement(foreignTradeButton).click();
-        return new ForeignTradePage(driver);
+    public BusinessPage clickBusinessPage() {
+        DRIVER.findElement(BUSINESS_BUTTON).click();
+        return new BusinessPage(DRIVER);
     }
 
-    public BusinessPage clickBusinessPage(){
-        driver.findElement(businessButton).click();
-        return new BusinessPage(driver);
+    public FinancePage clickFinancePage() {
+        DRIVER.findElement(FINANCE_BUTTON).click();
+        return new FinancePage(DRIVER);
     }
 
-    public FinancePage clickFinancePage(){
-        driver.findElement(financeButton).click();
-        return new FinancePage(driver);
+    public PrivateBankingPage clickPrivateBankingPage() {
+        DRIVER.findElement(PRIVATE_BANKING_BUTTON).click();
+        return new PrivateBankingPage(DRIVER);
     }
 
-    public PrivateBankingPage clickPrivateBankingPage(){
-        driver.findElement(privateBankingButton).click();
-        return new PrivateBankingPage(driver);
+    public InvestorsPage clickInvestorsPage() {
+        DRIVER.findElement(INVESTORS_BUTTON).click();
+        return new InvestorsPage(DRIVER);
     }
 
-    public InvestorsPage clickInvestorsPage(){
-        driver.findElement(investorsButton).click();
-        return new InvestorsPage(driver);
+    public LoginPage clickLoginPage() {
+        DRIVER.findElement(LOGIN_BUTTON).click();
+        return new LoginPage(DRIVER);
     }
-
-    public LoginPage clickLoginPage(){
-        driver.findElement(loginButton).click();
-        return new LoginPage(driver);
-    }
-
-    public void switchToSecondTab(){
-            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-            driver.switchTo().window(tabs.get(1));
-    }
-
 }
