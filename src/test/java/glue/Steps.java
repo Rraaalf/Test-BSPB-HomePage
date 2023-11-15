@@ -7,9 +7,14 @@ import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Attachment;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import pages.HomePage;
@@ -17,6 +22,10 @@ import pages.LoginPage;
 import pages.Manager;
 import pages.RetailPage;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +44,25 @@ public class Steps {
                 .ignoring(NoSuchElementException.class);
 
         wait.until(ExpectedConditions.urlToBe(url));
+    }
+
+    public String captureScreen() {
+        String path;
+        try {
+            WebDriver webDriver = new Augmenter().augment(driver);
+            File source = ((TakesScreenshot)webDriver).getScreenshotAs(OutputType.FILE);
+            path = "src/test/resources/attachments/screenshots/" + source.getName();
+            FileUtils.copyFile(source, new File(path));
+        }
+        catch (IOException e) {
+            path = "Failed to capture screenshot: " + e.getMessage();
+        }
+        return path;
+    }
+
+    @Attachment(value = "screenshot", type = "image/png", fileExtension = ".png")
+    public byte[] attachScreenshotAllure(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
     }
 
     @Before
@@ -56,9 +84,10 @@ public class Steps {
     }
 
     @И("отображается кнопка {string}")
-    public void отображаетсяКнопка(String arg0) {
+    public void отображаетсяКнопка(String arg0) throws IOException {
+        attachScreenshotAllure(captureScreen());
         if (arg0.contains("Частным клиентам")) {
-            assertThat(driver.findElement(homePage.RETAIL_BUTTON).isDisplayed())
+            assertThat(!driver.findElement(homePage.RETAIL_BUTTON).isDisplayed())
                     .as("Проверка отображения кнопки {string}")
                     .isTrue();
         }

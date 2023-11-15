@@ -3,3 +3,4 @@
 allure-report/
 build/
 target/
+src/test/resources/attachments/
