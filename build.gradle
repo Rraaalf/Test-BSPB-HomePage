@@ -10,6 +10,7 @@ description = 'BSPB-HomePage'
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
@@ -50,6 +51,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'org.assertj:assertj-core:3.24.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
+    testImplementation 'org.junit.platform:junit-platform-suite:1.10.1'
 
     // allure
     testImplementation 'io.qameta.allure:allure-java-commons:2.24.0'
@@ -66,6 +68,7 @@ dependencies {
     // cucumber
     testImplementation 'io.cucumber:cucumber-java:7.14.0'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.14.0'
     testImplementation 'io.cucumber:cucumber-picocontainer:7.14.0'
 }
 
@@ -86,6 +89,7 @@ tasks.test {
         events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
     }
     useJUnitPlatform()
+    systemProperty("cucumber.junit-platform.naming-strategy", "long")
 }
 
 allure {
